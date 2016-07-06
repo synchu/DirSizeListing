@@ -38,9 +38,9 @@
             this.colSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pkId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnSelectFolder = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbPath = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.label2 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgvFolders)).BeginInit();
@@ -137,14 +137,14 @@
             this.btnSelectFolder.UseVisualStyleBackColor = true;
             this.btnSelectFolder.Click += new System.EventHandler(this.btnSelectFolder_Click);
             // 
-            // textBox1
+            // tbPath
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBox1.Location = new System.Drawing.Point(138, 511);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(305, 20);
-            this.textBox1.TabIndex = 5;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.tbPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbPath.Location = new System.Drawing.Point(138, 511);
+            this.tbPath.Name = "tbPath";
+            this.tbPath.Size = new System.Drawing.Size(305, 20);
+            this.tbPath.TabIndex = 5;
+            this.tbPath.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label1
             // 
@@ -155,15 +155,15 @@
             this.label1.Size = new System.Drawing.Size(0, 13);
             this.label1.TabIndex = 6;
             // 
-            // progressBar1
+            // progressBar
             // 
-            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.progressBar1.BackColor = System.Drawing.SystemColors.Control;
-            this.progressBar1.Location = new System.Drawing.Point(492, 509);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(217, 23);
-            this.progressBar1.TabIndex = 7;
-            this.progressBar1.Visible = false;
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.progressBar.BackColor = System.Drawing.SystemColors.Control;
+            this.progressBar.Location = new System.Drawing.Point(492, 509);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(217, 23);
+            this.progressBar.TabIndex = 7;
+            this.progressBar.Visible = false;
             // 
             // label2
             // 
@@ -180,9 +180,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1036, 544);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.tbPath);
             this.Controls.Add(this.btnSelectFolder);
             this.Controls.Add(this.dgvFolders);
             this.Controls.Add(this.btnRefresh);
@@ -207,9 +207,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colModifiedDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSize;
         private System.Windows.Forms.DataGridViewTextBoxColumn pkId;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbPath;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label2;
     }
