@@ -55,12 +55,6 @@ namespace DirSize
             Task ts = new Task(()=> ProcessDirectory(selectedFolder, 0, 0));
             Task redrawDataGrid = ts.ContinueWith((a) => DataGridViewUpdate());
 
-
-            label1.Visible = false;
-            progressBar.Visible = true;
-            progressBar.Step = 1;
-            progressBar.Value = 0;
-
             initDataTable();
 
             try
@@ -70,12 +64,9 @@ namespace DirSize
             {
                 log.Add(e.Message);
                 label1.Visible = true;
-                label1.Text = "Something uknown happened! Make it known an treat accordingly!";
+                label1.Text = "Something uknown happened! Make it known and treat accordingly!";
             }
             
-            progressBar.Visible = false;
-            label1.Visible = true;
-            progressBar.Step = 1;
         }
 
         private void initDataTable()
