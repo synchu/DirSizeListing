@@ -62,9 +62,10 @@ namespace DirSize
                 ts.Start();
             } catch (AggregateException e)
             {
+                
                 log.Add(e.Message);
                 label1.Visible = true;
-                label1.Text = "Something uknown happened! Make it known and treat accordingly!";
+                label1.Text = "Something unknown happened! Make it known by enabling logging, recompile and rerun ... and treat accordingly!";
             }
             
         }
