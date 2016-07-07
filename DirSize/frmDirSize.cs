@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DirSize
@@ -11,9 +13,10 @@ namespace DirSize
     {
         private BindingSource dsFolders = new BindingSource();
         DataTable dtFolders = null;
-        string selectedPath = "C:\\temp";
+        string selectedPath = "C:\\acl";
         List<string> log = new List<string>();
         bool bLog = false;
+        AutoCompleteStringCollection acscSource = new AutoCompleteStringCollection();
 
 
         public frmDirSize()
@@ -24,6 +27,9 @@ namespace DirSize
         private void frmDirSize_Load(object sender, EventArgs e)
         {
             tbPath.Text = selectedPath;
+            tbPath.AutoCompleteMode = AutoCompleteMode.Suggest;
+            tbPath.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            tbPath.AutoCompleteCustomSource = acscSource;
         }
 
         private void btnSelectFolder_Click(object sender, EventArgs e)
@@ -45,6 +51,11 @@ namespace DirSize
 
         private void getDirs(string selectedFolder)
         {
+
+            Task ts = new Task(()=> ProcessDirectory(selectedFolder, 0, 0));
+            Task redrawDataGrid = ts.ContinueWith((a) => DataGridViewUpdate());
+
+
             label1.Visible = false;
             progressBar.Visible = true;
             progressBar.Step = 1;
@@ -52,10 +63,16 @@ namespace DirSize
 
             initDataTable();
 
-            ProcessDirectory(selectedFolder, 0, 0);
-
-            formatDataViewGrid();
-
+            try
+            {
+                ts.Start();
+            } catch (AggregateException e)
+            {
+                log.Add(e.Message);
+                label1.Visible = true;
+                label1.Text = "Something uknown happened! Make it known an treat accordingly!";
+            }
+            
             progressBar.Visible = false;
             label1.Visible = true;
             progressBar.Step = 1;
@@ -80,6 +97,61 @@ namespace DirSize
             dtFolders.PrimaryKey = new DataColumn[] { pkId };
         }
 
+
+        delegate void DataGridViewUpdateCallback();
+
+        private void DataGridViewUpdate()
+        {
+            if (this.dgvFolders.InvokeRequired)
+            {
+                DataGridViewUpdateCallback dgvc = new DataGridViewUpdateCallback(DataGridViewUpdate);
+                this.Invoke(dgvc);
+            } else
+            {
+                this.dgvFolders.Columns["colSize"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                this.dgvFolders.Columns["colModifiedDate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                this.dgvFolders.Update();
+                assignSources();
+                formatSize();
+                progressBar.Visible = false;
+                label1.Visible = true;
+            }
+        }
+
+
+        delegate void MakeProgressCallback();
+
+        private void MakeProgress()
+        {
+            if (this.progressBar.InvokeRequired)
+            {
+                MakeProgressCallback mpc = new MakeProgressCallback(MakeProgress);
+                this.Invoke(mpc, new object[] { });
+            } else
+            {
+                this.progressBar.PerformStep();
+            }
+        }
+
+        delegate void InitProgressBarCallback(int max);
+
+        private void InitProgressBar(int max)
+        {
+            if (this.progressBar.InvokeRequired)
+            {
+                InitProgressBarCallback ipc = new InitProgressBarCallback(InitProgressBar);
+                this.Invoke(ipc, new object[] { max });
+
+            } else
+            {
+                label1.Visible = false;
+                progressBar.Visible = true;
+                progressBar.Value = 1;
+                progressBar.Maximum = max;
+                progressBar.Step = 4;
+            }
+        }
+        
         // Process all files in the directory passed in, recurse on any directories 
         // that are found, and process the files they contain.
 
@@ -89,7 +161,6 @@ namespace DirSize
 
 
             List<FileInfo> fiList = new List<FileInfo>();
-            DataRow drFolder = null;
             long firstLevelPkId = 0;
             string[] fileEntries = null;
             bool someSkipped = false;
@@ -150,9 +221,9 @@ namespace DirSize
             if (!someSkipped)
             {
                 int progress = 0;
-                progressBar.Value = 1;
-                progressBar.Maximum = subdirectoryEntries.Length + 1;
-                progressBar.Step = 4;
+
+                this.InitProgressBar(subdirectoryEntries.Length + 1);
+                
 
                 foreach (string subdirectory in subdirectoryEntries)
                 {
@@ -169,7 +240,7 @@ namespace DirSize
                     ProcessDirectory(subdirectory, firstLevelDir + 1, firstLevelDir == 0 ? firstLevelPkId : pkId);
 
                     //fancy mod 4 based update
-                    if ((progress & 3) == 0) progressBar.PerformStep();
+                    if ((progress & 3) == 0) this.MakeProgress();
 
                     progress++;
                 }
@@ -211,11 +282,6 @@ namespace DirSize
             fiList.Clear();
         }
 
-        private void formatDataViewGrid()
-        {
-            this.dgvFolders.Columns["colSize"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            this.dgvFolders.Columns["colModifiedDate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-        }
         private static FileInfo ProcessFile(string path)
         {
             return new FileInfo(path);
@@ -251,8 +317,7 @@ namespace DirSize
             if (!string.IsNullOrWhiteSpace(selectedPath))
             {
                 getDirs(selectedPath);
-                assignSources();
-                formatSize();
+                
             }
             else
             {
@@ -280,14 +345,28 @@ namespace DirSize
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
+
+            if (tbPath.Text.Length > 0)
+            {
+                string root = Path.GetPathRoot(tbPath.Text);
+                if (root.Length > 0)
+                {
+                    string[] directories = Directory.GetDirectories(root, Path.GetFileNameWithoutExtension(tbPath.Text) + @"*");
+                    acscSource.AddRange(directories);
+
+                }
+            }
+
             if (Directory.Exists(tbPath.Text))
             {
                 selectedPath = tbPath.Text;
-                label1.Text = "Correct selection";
+                label1.Text = "Folder correct!";
+                label1.ForeColor = System.Drawing.Color.Green;
             }
             else
             {
                 label1.Text = "Please, type or select an existing folder!";
+                label1.ForeColor = System.Drawing.Color.Red;
             }
         }
 
