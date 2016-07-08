@@ -23,3 +23,9 @@ The user interface should be rather self-explanatory.
 
 Feel free to comment/contribute.
 
+## Building the solution
+Simply clone the repository, then open and build the solution in Visual Studio.
+
+## More
+Folder enumeration uses .NET Task class to run in a separate thread, allowing for fast enumeration/size calculation, showing progress bar and navigating through the currently displayed list of items at the same time.
+
