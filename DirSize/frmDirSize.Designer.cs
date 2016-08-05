@@ -43,13 +43,15 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.label2 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.dtpFromDate = new System.Windows.Forms.DateTimePicker();
+            this.cbModifiedFrom = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFolders)).BeginInit();
             this.SuspendLayout();
             // 
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.Location = new System.Drawing.Point(945, 509);
+            this.btnClose.Location = new System.Drawing.Point(945, 538);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 0;
@@ -61,11 +63,11 @@
             // btnRefresh
             // 
             this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefresh.Location = new System.Drawing.Point(845, 509);
+            this.btnRefresh.Location = new System.Drawing.Point(845, 538);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(75, 23);
             this.btnRefresh.TabIndex = 1;
-            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.Text = "Go";
             this.toolTip1.SetToolTip(this.btnRefresh, "Click to refresh the list.");
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
@@ -88,7 +90,7 @@
             this.dgvFolders.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvFolders.Location = new System.Drawing.Point(12, 29);
             this.dgvFolders.Name = "dgvFolders";
-            this.dgvFolders.Size = new System.Drawing.Size(1012, 455);
+            this.dgvFolders.Size = new System.Drawing.Size(1012, 464);
             this.dgvFolders.TabIndex = 2;
             this.dgvFolders.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvFolders_CellDoubleClick);
             this.dgvFolders.CellToolTipTextNeeded += new System.Windows.Forms.DataGridViewCellToolTipTextNeededEventHandler(this.dgvFolders_CellToolTipTextNeeded);
@@ -129,7 +131,7 @@
             // btnSelectFolder
             // 
             this.btnSelectFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelectFolder.Location = new System.Drawing.Point(12, 509);
+            this.btnSelectFolder.Location = new System.Drawing.Point(12, 499);
             this.btnSelectFolder.Name = "btnSelectFolder";
             this.btnSelectFolder.Size = new System.Drawing.Size(101, 23);
             this.btnSelectFolder.TabIndex = 3;
@@ -140,9 +142,9 @@
             // tbPath
             // 
             this.tbPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.tbPath.Location = new System.Drawing.Point(138, 511);
+            this.tbPath.Location = new System.Drawing.Point(12, 547);
             this.tbPath.Name = "tbPath";
-            this.tbPath.Size = new System.Drawing.Size(305, 20);
+            this.tbPath.Size = new System.Drawing.Size(348, 20);
             this.tbPath.TabIndex = 5;
             this.tbPath.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
@@ -150,7 +152,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(462, 514);
+            this.label1.Location = new System.Drawing.Point(462, 543);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(0, 13);
             this.label1.TabIndex = 6;
@@ -159,26 +161,47 @@
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.progressBar.BackColor = System.Drawing.SystemColors.Control;
-            this.progressBar.Location = new System.Drawing.Point(492, 509);
+            this.progressBar.Location = new System.Drawing.Point(578, 538);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(217, 23);
+            this.progressBar.Size = new System.Drawing.Size(189, 23);
             this.progressBar.TabIndex = 7;
             this.progressBar.Visible = false;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(143, 496);
+            this.label2.Location = new System.Drawing.Point(17, 527);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(111, 13);
             this.label2.TabIndex = 8;
             this.label2.Text = "...or type path directly:";
             // 
+            // dtpFromDate
+            // 
+            this.dtpFromDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.dtpFromDate.Location = new System.Drawing.Point(160, 520);
+            this.dtpFromDate.Name = "dtpFromDate";
+            this.dtpFromDate.Size = new System.Drawing.Size(200, 20);
+            this.dtpFromDate.TabIndex = 9;
+            // 
+            // cbModifiedFrom
+            // 
+            this.cbModifiedFrom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbModifiedFrom.AutoSize = true;
+            this.cbModifiedFrom.Location = new System.Drawing.Point(160, 499);
+            this.cbModifiedFrom.Name = "cbModifiedFrom";
+            this.cbModifiedFrom.Size = new System.Drawing.Size(113, 17);
+            this.cbModifiedFrom.TabIndex = 11;
+            this.cbModifiedFrom.Text = "...modified date >=";
+            this.cbModifiedFrom.UseVisualStyleBackColor = true;
+            // 
             // frmDirSize
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1036, 544);
+            this.ClientSize = new System.Drawing.Size(1036, 573);
+            this.Controls.Add(this.cbModifiedFrom);
+            this.Controls.Add(this.dtpFromDate);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.label1);
@@ -212,6 +235,8 @@
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DateTimePicker dtpFromDate;
+        private System.Windows.Forms.CheckBox cbModifiedFrom;
     }
 }
 

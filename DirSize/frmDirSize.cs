@@ -42,9 +42,8 @@ namespace DirSize
             {
                 selectedPath = fbd.SelectedPath;
                 tbPath.Text = selectedPath;
-                getDirs(selectedPath);
-                assignSources();
-                formatSize();
+                // don't process immediately
+                //getDirs(selectedPath);
             }
         }
 
@@ -60,6 +59,7 @@ namespace DirSize
             try
             {
                 ts.Start();
+                btnRefresh.Enabled = ts.IsCompleted;
             } catch (AggregateException e)
             {
                 
@@ -107,6 +107,7 @@ namespace DirSize
                 formatSize();
                 progressBar.Visible = false;
                 label1.Visible = true;
+                btnRefresh.Enabled = true;
             }
         }
 
@@ -157,8 +158,9 @@ namespace DirSize
             string[] fileEntries = null;
             bool someSkipped = false;
 
+            DateTime factorDate = dtpFromDate.Value.Date;
 
-            try
+           try
             {
                 fileEntries = Directory.GetFiles(targetDirectory);
             }
@@ -182,7 +184,16 @@ namespace DirSize
                         fiList.Add(fi);
                         if (firstLevelDir == 0)
                         {
-                            InsertRow(fileName, fi, "File", fi.Length);
+                            if (!cbModifiedFrom.Checked)
+                            {
+                                InsertRow(fileName, fi, "File", fi.Length);
+                            } else
+                            {
+                                 if (DateTime.Compare(fi.LastWriteTime.Date, factorDate) > -1)
+                                {
+                                    InsertRow(fileName, fi, "File", fi.Length);
+                                }
+                            }
                         }
                     }
                 }
@@ -249,7 +260,7 @@ namespace DirSize
         private bool logNonCriticalError(string labelMessage, string logMessage)
         {
             log.Add(logMessage);
-            label1.Text = labelMessage;
+            //label1.Text = labelMessage;
             return true;
         }
 
@@ -282,10 +293,25 @@ namespace DirSize
         private Int64 getDirSize(List<FileInfo> fiList)
         {
             Int64 size = 0;
+            DateTime factorDate = dtpFromDate.Value.Date;
+
             foreach (FileInfo fi in fiList)
             {
-                size += fi.Length;
-                log.Add(fi.Name);
+                if (!cbModifiedFrom.Checked)
+                {
+                    size += fi.Length;
+                    log.Add(fi.Name);
+                }
+                else
+                {
+                    if (DateTime.Compare(fi.LastWriteTime.Date, factorDate) > -1)
+                    {
+                        size += fi.Length;
+                        log.Add(fi.Name);
+                    }
+                }
+
+                
             }
             return size;
         }
