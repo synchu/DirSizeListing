@@ -23,6 +23,10 @@ The user interface should be rather self-explanatory.
 
 Feel free to comment/contribute.
 
+## Gotcha
+
+Certainly, enumerating files and sized via the MFT would yield much faster results, but would definitely require more time for development and testing, which I can't spare at the moment. This utility runs in the background while I am doing something else and comes with results are just ok for the purpose.
+
 ## Building the solution
 Simply clone the repository, then open and build the solution in Visual Studio.
 
